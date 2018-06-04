@@ -1,5 +1,5 @@
 {
-  "name": "buddha-style",
+  "name": "dominate-hongkong",
   "version": "1.0.0",
   "scripts": {
     "build": "webpack -p",
@@ -7,14 +7,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ShawTim/buddha-style.git"
+    "url": "git+https://github.com/ShawTim/dominate-hongkong.git"
   },
   "author": "ShawTim",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ShawTim/buddha-style/issues"
+    "url": "https://github.com/ShawTim/dominate-hongkong/issues"
   },
-  "homepage": "https://github.com/ShawTim/buddha-style#readme",
+  "homepage": "https://github.com/ShawTim/dominate-hongkong#readme",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
@@ -27,7 +27,6 @@
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.20.1",
-    "tippy.js": "^2.4.1",
     "url-loader": "^0.6.2",
     "webpack": "^3.11.0"
   },

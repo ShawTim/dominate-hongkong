@@ -1,9 +1,9 @@
-# buddha-style
-佛系ＯＯ生成器
+# dominate-hongkong
+香港制霸地圖
 
-See [demo](https://shawtim.github.io/buddha-style/) on Github page.
+See [demo](https://shawtim.github.io/dominate-hongkong/) on Github page.
 
-![Introduction](https://shawtim.github.io/buddha-style/intro.png)
+![Introduction](https://shawtim.github.io/dominate-hongkong/intro.png)
 
 ### Installation
 `npm i`
