@@ -18,6 +18,9 @@ module.exports = {
       { from: '*.jpg' },
       { from: './images/*.png' },
       { from: './images/*.jpg' },
+      { from: './js/rgbcolor.js' },
+      { from: './js/StackBlur.js' },
+      { from: './js/canvg.js' },
     ])
   ],
   module: {

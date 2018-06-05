@@ -7,6 +7,7 @@ module.exports = {
       width: 250,
       height: 200,
       lineHeight: 30,
+      fontMargin: 10,
       fontSize: 20,
     },
     data: [{
@@ -38,11 +39,12 @@ module.exports = {
   local: {
     name: "本地居民版",
     menu: {
-      x: 890,
-      y: 450,
-      width: 250,
+      x: 850,
+      y: 480,
+      width: 330,
       height: 200,
       lineHeight: 30,
+      fontMargin: 10,
       fontSize: 20,
     },
     data: [{
@@ -74,16 +76,17 @@ module.exports = {
   trendy: {
     name: "潮童版",
     menu: {
-      x: 890,
-      y: 450,
-      width: 250,
+      x: 850,
+      y: 480,
+      width: 330,
       height: 200,
       lineHeight: 30,
-      fontSize: 20,
+      fontMargin: 7,
+      fontSize: 12,
     },
     data: [{
       level: -99,
-      color: "#FFFFFF",
+      color: "#bababa",
       desc: "跟過_假期入去搵隱世邪惡小店",
     }, {
       level: 1,
@@ -100,7 +103,7 @@ module.exports = {
     }, {
       level: 4,
       color: "#d58337",
-      desc: "另一半/ex住過而你要晚晚送佢番屋企",
+      desc: "另一半住過而你要晚晚送佢番屋企",
     }, {
       level: 5,
       color: "#e84c3d",

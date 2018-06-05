@@ -1,4 +1,3 @@
-import html2canvas from "html2canvas";
 import FileSaver from "file-saver";
 
 import meta from "./meta";
@@ -15,6 +14,7 @@ const init = (svg) => {
   calculateLevel(svg);
   renderTip(svg);
   renderDropdown(svg);
+  renderOptions(svg);
 
   colorMap = levels[selected].data.reduce((map, level) => {
     map[level.level] = level.color;
@@ -56,12 +56,12 @@ const renderTip = (svg) => {
   });
   [...levelDescs].forEach((desc, i) => {
     desc.setAttribute("x", levels[selected].menu.x+80);
-    desc.setAttribute("y", levels[selected].menu.y+30+(i*levels[selected].menu.lineHeight));
+    desc.setAttribute("y", levels[selected].menu.y+levels[selected].menu.fontMargin+20+(i*levels[selected].menu.lineHeight));
     desc.innerHTML = levels[selected].data[desc.getAttribute("index")-0].desc;
   });
   [...levelValues].forEach((value, i) => {
     value.setAttribute("x", levels[selected].menu.x+levels[selected].menu.width-20);
-    value.setAttribute("y", levels[selected].menu.y+30+(i*levels[selected].menu.lineHeight));
+    value.setAttribute("y", levels[selected].menu.y+levels[selected].menu.fontMargin+20+(i*levels[selected].menu.lineHeight));
     value.innerHTML = `${meta.levelPrefix}${levels[selected].data[value.getAttribute("index")-0].level}`;
   });
 };
@@ -94,6 +94,29 @@ const renderDropdown = (svg) => {
   });
 };
 
+const renderOptions = (svg) => {
+  const dropdown = document.querySelector("#options ul");
+  const oldlist = dropdown.querySelectorAll("li.option-item");
+  [...oldlist].forEach((li) => li.parentNode.removeChild(li));
+
+  Object.keys(levels).forEach((item) => {
+    const li = document.createElement("li");
+    const label = document.createElement("label");
+
+    label.setAttribute("option", item);
+    label.innerHTML = levels[item].name;
+    label.addEventListener("click", (e) => {
+      selected = e.target.getAttribute("option");
+      init(svg);
+    });
+
+    li.classList.add("option-item");
+    li.appendChild(label);
+
+    dropdown.appendChild(li);
+  });
+};
+
 const findSameDistricts = (container, name) => container.querySelectorAll(`polyline[name=${name}]`);
 
 document.addEventListener("DOMContentLoaded", (e) => {
@@ -104,16 +127,21 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
   const downloadBtn = document.getElementById("download-button");
   downloadBtn.addEventListener("click", (e) => {
-    html2canvas(container).then((canvas) => {
-      canvas.toBlob((blob) => FileSaver.saveAs(blob, meta.download));
-    });
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = 1200;
+    canvas.height = 700;
+
+    const data = new XMLSerializer().serializeToString(svg);
+    canvg(canvas, data);
+    canvas.toBlob((blob) => FileSaver.saveAs(blob, meta.download));
   });
 
   init(svg);
 
   // font family
   const texts = svg.querySelectorAll("g");
-  [...texts].forEach((text) => text.setAttribute("font-family", `"Courier New", Helvetica, Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro", "微軟正黑體", "Microsoft JhengHei", "標楷體", DFKai-SB, sans-serif`));
+  [...texts].forEach((text) => text.setAttribute("font-family", `"Courier New", Helvetica, Arial, "WenQuanYi Zen Hei", "LiHei Pro", "Microsoft JhengHei", DFKai-SB, sans-serif`));
 
   // district handling
   const districtRegions = svg.querySelectorAll("polyline");
@@ -138,4 +166,5 @@ document.addEventListener("DOMContentLoaded", (e) => {
       districtTitle.innerHTML = "";
     });
   });
+
 });

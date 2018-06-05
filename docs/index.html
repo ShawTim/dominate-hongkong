@@ -3,8 +3,11 @@
     <title>香港制霸地圖</title>
     <meta charset="utf8">
     <link rel="shortcut icon" href="./images/favicon.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script type="text/javascript" src="./rgbcolor.js"></script>
+    <script type="text/javascript" src="./StackBlur.js"></script>
+    <script type="text/javascript" src="./canvg.js"></script>
     <script type="text/javascript" src="./bundle.min.js"></script>
-    <script type="text/javascript" src="https://shawtim.github.io/doge/doge.min.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <!--
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114319536-1"></script>
@@ -25,12 +28,12 @@
   </head>
   <body>
     <div class="image-container">
-      <svg width="1200" height="700">
+      <svg viewBox="0 0 1200 700">
         <rect width="100%" height="100%" fill="#9CCEC9"/>
         <g class="title" font-size="48" text-anchor="middle">
           <text class="main-title" x="240" y="100" font-size="80" font-weight="600"></text>
-          <text class="level-title" x="200" y="180"></text>
-          <text class="level" x="280" y="180" font-size="48"></text>
+          <text class="level-title" x="180" y="180"></text>
+          <text class="level" x="290" y="180" font-size="48"></text>
         </g>
         <g class="tips" text-anchor="start">
           <rect class="container" rx="20" ry="20" fill="white" fill-opacity="0.6" stroke="black" stroke-width="3" />
@@ -86,16 +89,38 @@
         <polyline name="islands" points="480,550 460,590 500,570 480,570 480,550" stroke="black" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="white" />
       </svg>
     </div>
-    <div class="convert-button">
-      <button id="download-button">下載</button>
-    </div>
-    <div class="footer">
-      <a href="https://github.com/ShawTim/dominate-hongkong" target="_blank"><img src="./images/github.png"/></a>
-      <span>Created by <a href="https://github.com/ShawTim" target="_blank">ShawTim</a>.</span>
+    <div class="app-panel">
+      <div class="github">
+        <a href="https://github.com/ShawTim/dominate-hongkong" target="_blank" title="Github project"><img src="./images/github.png"/></a>
+      </div>
+      <div class="others">
+        <i class="material-icons" title="其它制縣系列作品" tabIndex="0" data-jq-dropdown="#other-link" data-vertical-offset="-150">group</i>
+      </div>
+      <div class="options">
+        <i class="material-icons" title="更改制霸設定" tabIndex="0" data-jq-dropdown="#options" data-vertical-offset="-150">settings</i>
+      </div>
+      <div class="convert-button" id="download-button">
+        <i class="material-icons" title="下載圖片" tabIndex="0">cloud_download</i>
+      </div>
     </div>
     <div id="dropdown-menu" class="jq-dropdown">
       <ul class="jq-dropdown-menu">
         <li><label class="dropdown-header"></label></li>
+        <li class="jq-dropdown-divider"></li>
+      </ul>
+    </div>
+    <div id="other-link" class="jq-dropdown">
+      <ul class="jq-dropdown-menu">
+        <li><label class="dropdown-header">其它制縣系列作品</label></li>
+        <li class="jq-dropdown-divider"></li>
+        <li><a href="https://zhung.com.tw/japanex/" target="_blank">JapanEx</a></li>
+        <li><a href="https://travel.tonypai.com.tw/" target="_blank">制縣等級台灣版</a></li>
+        <li><a href="http://www.thelittleprince.hk/hongkong/" target="_blank">制縣等級香港版</a></li>
+      </ul>
+    </div>
+    <div id="options" class="jq-dropdown">
+      <ul class="jq-dropdown-menu">
+        <li><label class="dropdown-header">更改制霸設定</label></li>
         <li class="jq-dropdown-divider"></li>
       </ul>
     </div>
