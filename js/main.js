@@ -1,4 +1,5 @@
 import FileSaver from "file-saver";
+import micromodal from "micromodal";
 
 import meta from "./meta";
 import levels from "./levels";
@@ -15,6 +16,8 @@ const init = (svg) => {
   renderTip(svg);
   renderDropdown(svg);
   renderOptions(svg);
+
+  micromodal.init();
 
   colorMap = levels[selected].data.reduce((map, level) => {
     map[level.level] = level.color;
@@ -54,6 +57,7 @@ const renderTip = (svg) => {
   container.setAttribute("y", levels[selected].menu.y);
   container.setAttribute("width", levels[selected].menu.width);
   container.setAttribute("height", levels[selected].menu.height);
+  const fontMargin = levels[selected].menu.fontSize/2;
   [...levelColors].forEach((color, i) => {
     color.setAttribute("x", levels[selected].menu.x+20);
     color.setAttribute("y", levels[selected].menu.y+10+(i*levels[selected].menu.lineHeight));
@@ -62,12 +66,12 @@ const renderTip = (svg) => {
   });
   [...levelDescs].forEach((desc, i) => {
     desc.setAttribute("x", levels[selected].menu.x+80);
-    desc.setAttribute("y", levels[selected].menu.y+levels[selected].menu.fontMargin+20+(i*levels[selected].menu.lineHeight));
+    desc.setAttribute("y", levels[selected].menu.y+fontMargin+20+(i*levels[selected].menu.lineHeight));
     desc.innerHTML = levels[selected].data[desc.getAttribute("index")-0].desc;
   });
   [...levelValues].forEach((value, i) => {
     value.setAttribute("x", levels[selected].menu.x+levels[selected].menu.width-20);
-    value.setAttribute("y", levels[selected].menu.y+levels[selected].menu.fontMargin+20+(i*levels[selected].menu.lineHeight));
+    value.setAttribute("y", levels[selected].menu.y+fontMargin+20+(i*levels[selected].menu.lineHeight));
     value.innerHTML = `${meta.levelPrefix}${levels[selected].data[value.getAttribute("index")-0].level}`;
   });
 };
@@ -111,16 +115,53 @@ const renderOptions = (svg) => {
 
     label.setAttribute("option", item);
     label.innerHTML = levels[item].name;
-    label.addEventListener("click", (e) => {
-      selected = e.target.getAttribute("option");
-      init(svg);
-    });
+    if (item === "customize") {
+      label.setAttribute("data-micromodal-trigger", "modal");
+    } else {
+      label.addEventListener("click", (e) => {
+        selected = e.target.getAttribute("option");
+        init(svg);
+      });
+    }
 
     li.classList.add("option-item");
     li.appendChild(label);
 
     dropdown.appendChild(li);
   });
+};
+
+const initCustomize = () => {
+  levels.customize.data.slice().sort((a, b) => b.level - a.level).forEach((level, i) => {
+    const desc = document.querySelector(`#modal #modal-content .input-level-desc[index="${i}"]`);
+    const value = document.querySelector(`#modal #modal-content .input-level-value[index="${i}"]`);
+    const color = document.querySelector(`#modal #modal-content .input-level-color[index="${i}"]`);
+    if (desc) {
+      desc.setAttribute("placeholder", level.desc);
+    }
+    if (value) {
+      value.setAttribute("placeholder", level.level);
+    }
+    if (color) {
+      color.setAttribute("value", level.color);
+    }
+  });
+
+  const title = document.getElementById("input-main-title");
+  title.setAttribute("placeholder", meta.title);
+
+  const tipX = document.getElementById("input-tip-x");
+  const tipY = document.getElementById("input-tip-y");
+  const tipW = document.getElementById("input-tip-w");
+  const tipH = document.getElementById("input-tip-h");
+  const lineHeight = document.getElementById("input-tip-line-height");
+  const fontSize = document.getElementById("input-tip-font-size");
+  tipX.setAttribute("placeholder", levels.customize.menu.x);
+  tipY.setAttribute("placeholder", levels.customize.menu.y);
+  tipW.setAttribute("placeholder", levels.customize.menu.width);
+  tipH.setAttribute("placeholder", levels.customize.menu.height);
+  lineHeight.setAttribute("placeholder", levels.customize.menu.lineHeight);
+  fontSize.setAttribute("placeholder", levels.customize.menu.fontSize);
 };
 
 const findSameDistricts = (container, name) => container.querySelectorAll(`polyline[name=${name}]`);
@@ -143,7 +184,76 @@ document.addEventListener("DOMContentLoaded", (e) => {
     canvas.toBlob((blob) => FileSaver.saveAs(blob, meta.download));
   });
 
+  const saveBtn = document.getElementById("save-button");
+  saveBtn.addEventListener("click", (e) => {
+    const levelDescs = document.querySelectorAll("#modal #modal-content .input-level-desc[index]");
+    const levelValues = document.querySelectorAll("#modal #modal-content .input-level-value[index]");
+    const levelColors = document.querySelectorAll("#modal #modal-content .input-level-color[index]");
+
+    [...levelDescs].forEach((desc, i) => levels.customize.data[i].desc = desc.value || desc.placeholder);
+    [...levelValues].forEach((value, i) => levels.customize.data[i].level = (value.value || value.placeholder)-0);
+    [...levelColors].forEach((color, i) => levels.customize.data[i].color = color.value);
+
+    levels.customize.data.sort((a, b) => a.level - b.level);
+
+    const title = document.getElementById("input-main-title");
+    meta.title = title.value || title.placeholder;
+
+    const tipX = document.getElementById("input-tip-x");
+    const tipY = document.getElementById("input-tip-y");
+    const tipW = document.getElementById("input-tip-w");
+    const tipH = document.getElementById("input-tip-h");
+    const lineHeight = document.getElementById("input-tip-line-height");
+    const fontSize = document.getElementById("input-tip-font-size");
+    levels.customize.menu.x = (tipX.value || tipX.placeholder)-0;
+    levels.customize.menu.y = (tipY.value || tipY.placeholder)-0;
+    levels.customize.menu.width = (tipW.value || tipW.placeholder)-0;
+    levels.customize.menu.height = (tipH.value || tipH.placeholder)-0;
+    levels.customize.menu.lineHeight = (lineHeight.value || lineHeight.placeholder)-0;
+    levels.customize.menu.fontSize = (fontSize.value || fontSize.placeholder)-0;
+
+    selected = "customize";
+
+    init(svg);
+  });
+
+  const closeBtn = document.getElementById("close-button");
+  closeBtn.addEventListener("click", (e) => micromodal.close("#modal"));
+
+  /*
+  const avatar = document.querySelector(".avatar");
+  avatar.setAttribute("x", meta.avatar.x);
+  avatar.setAttribute("y", meta.avatar.y);
+  avatar.setAttribute("width", meta.avatar.width);
+  avatar.setAttribute("height", meta.avatar.height);
+
+  const uploadBtn = document.getElementById("upload-button");
+  uploadBtn.addEventListener("change", (e) => {
+    try {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = ((f) => {
+        return (e) => {
+          avatar.innerHTML = "";
+
+          const img = document.createElement("image");
+          img.setAttribute("x", meta.avatar.x);
+          img.setAttribute("y", meta.avatar.y);
+          img.setAttribute("width", meta.avatar.width);
+          img.setAttribute("height", meta.avatar.height);
+          img.setAttribute("xlink:href", `url(${e.target.result})`);
+          avatar.appendChild(img);
+        }
+      })(file);
+      reader.readAsDataURL(file);
+    } catch (e) {
+      console.error(e);
+    }
+  });
+  */
+
   init(svg);
+  initCustomize();
 
   // font family
   const texts = svg.querySelectorAll("g");

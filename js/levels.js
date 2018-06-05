@@ -110,4 +110,41 @@ module.exports = {
       desc: "爸爸擁有物業",
     }],
   },
+  customize: {
+    name: "自訂版",
+    menu: {
+      x: 890,
+      y: 450,
+      width: 250,
+      height: 200,
+      lineHeight: 30,
+      fontMargin: 10,
+      fontSize: 20,
+    },
+    data: [{
+      level: 0,
+      color: "#FFFFFF",
+      desc: "無去過",
+    }, {
+      level: 1,
+      color: "#3598db",
+      desc: "路過",
+    }, {
+      level: 2,
+      color: "#30cc70",
+      desc: "留過",
+    }, {
+      level: 3,
+      color: "#f3c218",
+      desc: "玩過",
+    }, {
+      level: 4,
+      color: "#d58337",
+      desc: "瞓過",
+    }, {
+      level: 5,
+      color: "#e84c3d",
+      desc: "住過",
+    }],
+  },
 };

@@ -15,7 +15,6 @@
     <script type="text/javascript" src="./canvg.js"></script>
     <script type="text/javascript" src="./bundle.min.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <!--
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114319536-1"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -30,12 +29,12 @@
 				enable_page_level_ads: true
 			});
 		</script>
-    -->
   </head>
   <body>
     <div class="image-container">
       <svg viewBox="0 0 1200 700">
         <rect width="100%" height="100%" fill="#9CCEC9"/>
+        <rect class="avatar" />
         <g class="title" font-size="48" text-anchor="middle">
           <text class="main-title" x="240" y="100" font-size="80" font-weight="600"></text>
           <text class="level-title" x="180" y="180"></text>
@@ -103,8 +102,16 @@
         <i class="material-icons" title="其它制縣系列作品" tabIndex="0" data-jq-dropdown="#other-link" data-vertical-offset="-150">group</i>
       </div>
       <div class="options">
-        <i class="material-icons" title="更改制霸設定" tabIndex="0" data-jq-dropdown="#options" data-vertical-offset="-150">settings</i>
+        <i class="material-icons" title="更改制霸設定" tabIndex="0" data-jq-dropdown="#options" data-vertical-offset="-175">settings</i>
       </div>
+      <!--
+      <div class="upload-button">
+        <label for="upload-button">
+          <i class="material-icons" title="加入頭像" tabIndex="0">cloud_upload</i>
+        </label>
+        <input id="upload-button" type="file" name="upload" />
+      </div>
+      -->
       <div class="convert-button" id="download-button">
         <i class="material-icons" title="下載圖片" tabIndex="0">cloud_download</i>
       </div>
@@ -129,6 +136,88 @@
         <li><label class="dropdown-header">更改制霸設定</label></li>
         <li class="jq-dropdown-divider"></li>
       </ul>
+    </div>
+    <div id="modal" aria-hidden="true">
+      <div>
+        <div role="dialog" aria-modal="true" aria-labelledby="modal-title" >
+          <header>
+            <h2 id="modal-title">自訂制霸設定</h2>
+          </header>
+          <div id="modal-content">
+            <span>
+              <h3>一般選項</h3>
+            </span>
+            <span>
+              <label for="input-main-title">大字標題</label>
+              <input id="input-main-title" type="text" placeholder="" />
+            </span>
+            <hr/>
+            <span>
+              <label>等級</label>
+              <input class="input-level-desc" index="0" type="text" placeholder="" />
+              <input class="input-level-value" index="0" type="number" placeholder="" />
+              <input class="input-level-color" index="0" type="color" />
+            </span>
+            <span>
+              <label>等級</label>
+              <input class="input-level-desc" index="1" type="text" placeholder="" />
+              <input class="input-level-value" index="1" type="number" placeholder="" />
+              <input class="input-level-color" index="1" type="color" />
+            </span>
+            <span>
+              <label>等級</label>
+              <input class="input-level-desc" index="2" type="text" placeholder="" />
+              <input class="input-level-value" index="2" type="number" placeholder="" />
+              <input class="input-level-color" index="2" type="color" />
+            </span>
+            <span>
+              <label>等級</label>
+              <input class="input-level-desc" index="3" type="text" placeholder="" />
+              <input class="input-level-value" index="3" type="number" placeholder="" />
+              <input class="input-level-color" index="3" type="color" />
+            </span>
+            <span>
+              <label>等級</label>
+              <input class="input-level-desc" index="4" type="text" placeholder="" />
+              <input class="input-level-value" index="4" type="number" placeholder="" />
+              <input class="input-level-color" index="4" type="color" />
+            </span>
+            <span>
+              <label>等級</label>
+              <input class="input-level-desc" index="5" type="text" placeholder="" />
+              <input class="input-level-value" index="5" type="number" placeholder="" />
+              <input class="input-level-color" index="5" type="color" />
+            </span>
+            <hr/>
+            <span>
+              <h3>細節選項</h3>
+            </span>
+            <span>
+              <label>參考表位置</label>
+              <input id="input-tip-x" type="number" placeholder="" />
+              <input id="input-tip-y" type="number" placeholder="" />
+            </span>
+            <span>
+              <label>參考表大小</label>
+              <input id="input-tip-w" type="number" placeholder="" />
+              <input id="input-tip-h" type="number" placeholder="" />
+            </span>
+            <span>
+              <label>參考表行高</label>
+              <input id="input-tip-line-height" type="number" placeholder="" />
+            </span>
+            <span>
+              <label>參考表字型大小</label>
+              <input id="input-tip-font-size" type="number" placeholder="" />
+            </span>
+            <hr/>
+            <span class="buttons">
+              <button id="save-button" data-micromodal-close>更改</button>
+              <button id="close-button" data-micromodal-close>關閉</button>
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

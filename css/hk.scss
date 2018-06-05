@@ -63,4 +63,65 @@ body {
     font-size: 32px;
     cursor: pointer;
   }
+
+  input[type=file] {
+    display: none;
+  }
+}
+
+#modal {
+  display: none;
+
+  &.is-open {
+    display: block;
+    position: fixed;
+    margin: 10vh auto;
+    width: 500px;
+    background-color: #FFFFFF;
+    border: 3px solid #000000;
+    border-radius: 20px;
+    box-shadow: 3px 3px 5px 0px;
+    opacity: 0.95;
+
+    div[role=dialog] {
+      padding: 0 20px 20px 20px;
+      text-align: center;
+
+      #modal-content {
+        display: flex;
+        flex-direction: column;
+
+        span {
+          display: flex;
+          flex-wrap: nowrap;
+          justify-content: center;
+
+          label {
+            margin: 0 20px;
+          }
+        }
+
+        input[type=text] {
+          width: 150px;
+        }
+
+        input[type=number] {
+          width: 60px;
+          text-align: right;
+        }
+
+        .buttons {
+          margin: 20px;
+
+          button {
+            font-size: 20px;
+          }
+        }
+      }
+
+      h2 {
+        font-size: 36px;
+      }
+    }
+  }
 }
