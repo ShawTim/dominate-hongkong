@@ -94,15 +94,16 @@
         <polyline name="islands" points="480,550 460,590 500,570 480,570 480,550" stroke="black" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="white" />
       </svg>
     </div>
+    <div class="option-panel">
+      <select id="mode-options">
+      </select>
+    </div>
     <div class="app-panel">
       <div class="github">
         <a href="https://github.com/ShawTim/dominate-hongkong" target="_blank" title="Github project"><img src="./images/github.png"/></a>
       </div>
       <div class="others">
         <i class="material-icons" title="其它制縣系列作品" tabIndex="0" data-jq-dropdown="#other-link" data-vertical-offset="-150">group</i>
-      </div>
-      <div class="options">
-        <i class="material-icons" title="更改制霸設定" tabIndex="0" data-jq-dropdown="#options" data-vertical-offset="-175">settings</i>
       </div>
       <!--
       <div class="upload-button">
@@ -129,12 +130,6 @@
         <li><a href="https://zhung.com.tw/japanex/" target="_blank">JapanEx</a></li>
         <li><a href="https://travel.tonypai.com.tw/" target="_blank">制縣等級台灣版</a></li>
         <li><a href="http://www.thelittleprince.hk/hongkong/" target="_blank">制縣等級香港版</a></li>
-      </ul>
-    </div>
-    <div id="options" class="jq-dropdown">
-      <ul class="jq-dropdown-menu">
-        <li><label class="dropdown-header">更改制霸設定</label></li>
-        <li class="jq-dropdown-divider"></li>
       </ul>
     </div>
     <div id="modal" aria-hidden="true">
@@ -213,6 +208,7 @@
             <hr/>
             <span class="buttons">
               <button id="save-button" data-micromodal-close>更改</button>
+              <button id="reset-button">重置</button>
               <button id="close-button" data-micromodal-close>關閉</button>
             </span>
           </div>

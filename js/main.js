@@ -77,8 +77,9 @@ const renderTip = (svg) => {
 };
 
 const renderDropdown = (svg) => {
-  const dropdown = document.querySelector("#dropdown-menu ul");
-  const oldlist = dropdown.querySelectorAll("li.dropdown-level");
+  const dropdown = document.getElementById("dropdown-menu");
+  const ul = dropdown.querySelector("ul");
+  const oldlist = ul.querySelectorAll("li.dropdown-level");
   [...oldlist].forEach((li) => li.parentNode.removeChild(li));
 
   const list = levels[selected].data.slice().sort((a, b) => b.level - a.level);
@@ -93,6 +94,8 @@ const renderDropdown = (svg) => {
       const district = svg.querySelectorAll(`polyline[name=${selectedDistrict}]`);
       [...district].forEach((d) => d.setAttribute("fill", colorMap[districts[selectedDistrict].level]));
       calculateLevel(svg);
+
+      dropdown.style.display = "none";
     });
     label.addEventListener("mouseover", (e) => e.target.style.backgroundColor = item.color.toLowerCase() === "#ffffff" ? "#eaeaea" : item.color);
     label.addEventListener("mouseout", (e) => e.target.style.backgroundColor = null);
@@ -100,34 +103,40 @@ const renderDropdown = (svg) => {
     li.classList.add("dropdown-level");
     li.appendChild(label);
 
-    dropdown.appendChild(li);
+    ul.appendChild(li);
   });
 };
 
 const renderOptions = (svg) => {
-  const dropdown = document.querySelector("#options ul");
-  const oldlist = dropdown.querySelectorAll("li.option-item");
-  [...oldlist].forEach((li) => li.parentNode.removeChild(li));
+  const select = document.querySelector(".option-panel #mode-options");
+  select.innerHTML = "";
 
-  Object.keys(levels).forEach((item) => {
-    const li = document.createElement("li");
+  Object.keys(levels).forEach((item, i) => {
+    const option = document.createElement("option");
     const label = document.createElement("label");
 
-    label.setAttribute("option", item);
     label.innerHTML = levels[item].name;
+    option.value = item;
+    option.appendChild(label);
+
     if (item === "customize") {
-      label.setAttribute("data-micromodal-trigger", "modal");
-    } else {
-      label.addEventListener("click", (e) => {
-        selected = e.target.getAttribute("option");
-        init(svg);
-      });
+      option.addEventListener("click", (e) => micromodal.show("modal"));
     }
 
-    li.classList.add("option-item");
-    li.appendChild(label);
+    select.appendChild(option);
+  });
 
-    dropdown.appendChild(li);
+  const selectedOption = select.querySelector(`option[value=${selected}]`);
+  selectedOption.selected = "selected";
+
+  select.addEventListener("change", (e) => {
+    const option = e.target.options[e.target.selectedIndex].value;
+    if (option === "customize") {
+      micromodal.show("modal");
+    } else {
+      selected = option;
+      init(svg);
+    }
   });
 };
 
@@ -137,18 +146,19 @@ const initCustomize = () => {
     const value = document.querySelector(`#modal #modal-content .input-level-value[index="${i}"]`);
     const color = document.querySelector(`#modal #modal-content .input-level-color[index="${i}"]`);
     if (desc) {
-      desc.setAttribute("placeholder", level.desc);
+      desc.placeholder = level.desc;
     }
     if (value) {
-      value.setAttribute("placeholder", level.level);
+      value.placeholder = level.level;
     }
     if (color) {
-      color.setAttribute("value", level.color);
+      color.value = level.color;
+      color.setAttribute("default-value", level.color);
     }
   });
 
   const title = document.getElementById("input-main-title");
-  title.setAttribute("placeholder", meta.title);
+  title.placeholder = meta.title;
 
   const tipX = document.getElementById("input-tip-x");
   const tipY = document.getElementById("input-tip-y");
@@ -156,12 +166,28 @@ const initCustomize = () => {
   const tipH = document.getElementById("input-tip-h");
   const lineHeight = document.getElementById("input-tip-line-height");
   const fontSize = document.getElementById("input-tip-font-size");
-  tipX.setAttribute("placeholder", levels.customize.menu.x);
-  tipY.setAttribute("placeholder", levels.customize.menu.y);
-  tipW.setAttribute("placeholder", levels.customize.menu.width);
-  tipH.setAttribute("placeholder", levels.customize.menu.height);
-  lineHeight.setAttribute("placeholder", levels.customize.menu.lineHeight);
-  fontSize.setAttribute("placeholder", levels.customize.menu.fontSize);
+  tipX.placeholder = levels.customize.menu.x;
+  tipY.placeholder = levels.customize.menu.y;
+  tipW.placeholder = levels.customize.menu.width;
+  tipH.placeholder = levels.customize.menu.height;
+  lineHeight.placeholder = levels.customize.menu.lineHeight;
+  fontSize.placeholder = levels.customize.menu.fontSize;
+};
+
+const resetCustomize = () => {
+  const levelDescs = document.querySelectorAll("#modal #modal-content .input-level-desc[index]");
+  const levelValues = document.querySelectorAll("#modal #modal-content .input-level-value[index]");
+  const levelColors = document.querySelectorAll("#modal #modal-content .input-level-color[index]");
+  const title = document.getElementById("input-main-title");
+  const tipX = document.getElementById("input-tip-x");
+  const tipY = document.getElementById("input-tip-y");
+  const tipW = document.getElementById("input-tip-w");
+  const tipH = document.getElementById("input-tip-h");
+  const lineHeight = document.getElementById("input-tip-line-height");
+  const fontSize = document.getElementById("input-tip-font-size");
+
+  [...levelDescs, ...levelValues, title, tipX, tipY, tipW, tipH, lineHeight, fontSize].forEach((element) => element.value = "");
+  [...levelColors].forEach((element) => element.value = element.getAttribute("default-value"));
 };
 
 const findSameDistricts = (container, name) => container.querySelectorAll(`polyline[name=${name}]`);
@@ -170,7 +196,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
   const container = document.querySelector(".image-container");
   const svg = container.querySelector("svg");
   const districtTitle = svg.querySelector(".district-name");
-  const dropdownTitle = document.querySelector("#dropdown-menu .dropdown-header");
+  const dropdown = document.getElementById("dropdown-menu");
+  const dropdownTitle = dropdown.querySelector(".dropdown-header");
 
   const downloadBtn = document.getElementById("download-button");
   downloadBtn.addEventListener("click", (e) => {
@@ -183,6 +210,9 @@ document.addEventListener("DOMContentLoaded", (e) => {
     canvg(canvas, data);
     canvas.toBlob((blob) => FileSaver.saveAs(blob, meta.download));
   });
+
+  const resetBtn = document.getElementById("reset-button");
+  resetBtn.addEventListener("click", resetCustomize);
 
   const saveBtn = document.getElementById("save-button");
   saveBtn.addEventListener("click", (e) => {
@@ -262,12 +292,15 @@ document.addEventListener("DOMContentLoaded", (e) => {
   // district handling
   const districtRegions = svg.querySelectorAll("polyline");
   [...districtRegions].forEach((district) => {
-    district.classList.add("dropdown-toggle");
     district.setAttribute("data-jq-dropdown", "#dropdown-menu");
 
     district.addEventListener("click", (e) => {
       selectedDistrict = e.target.getAttribute("name");
       dropdownTitle.innerHTML = districts[selectedDistrict].name;
+      setTimeout(() => {
+        dropdown.style.left = e.clientX;
+        dropdown.style.top = e.clientY;
+      }, 0);
     });
 
     district.addEventListener("mouseover", (e) => {
