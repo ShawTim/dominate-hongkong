@@ -7,7 +7,7 @@ See [demo](https://shawtim.github.io/dominate-hongkong/) on Github page.
 ![Introduction](https://shawtim.github.io/dominate-hongkong/intro.png)
 
 支援多種模式，包括自訂模式
-![Introduction](https://shawtim.github.io/dominate-hongkong/intro.png)
+![Introduction](https://shawtim.github.io/dominate-hongkong/intro1.png)
 
 使用介面
 ![Introduction](https://shawtim.github.io/dominate-hongkong/intro2.png)
