@@ -6,10 +6,8 @@ See [demo](https://shawtim.github.io/dominate-hongkong/) on Github page.
 基本版
 ![Introduction](https://shawtim.github.io/dominate-hongkong/intro.png)
 
-支援多種模式
+支援多種模式，包括自訂模式
 ![Introduction](https://shawtim.github.io/dominate-hongkong/intro.png)
-
-將來更支援自訂模式
 
 ### Installation
 `npm i`
