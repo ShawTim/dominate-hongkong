@@ -30,28 +30,28 @@
         <g class="title" font-size="48" text-anchor="middle">
           <text class="main-title" x="240" y="100" font-size="80" font-weight="600"></text>
           <text class="level-title" x="200" y="180"></text>
-          <text class="level" x="280" y="180" font-size="48">0</text>
+          <text class="level" x="280" y="180" font-size="48"></text>
         </g>
-        <g class="tips" font-size="20" text-anchor="start">
-          <rect x="900" y="450" rx="20" ry="20" width="250" height="200" fill="white" fill-opacity="0.6" stroke="black" stroke-width="3" />
-          <rect index="5" x="920" y="460" width="50" height="25" />
-          <rect index="4" x="920" y="490" width="50" height="25" />
-          <rect index="3" x="920" y="520" width="50" height="25" />
-          <rect index="2" x="920" y="550" width="50" height="25" />
-          <rect index="1" x="920" y="580" width="50" height="25" />
-          <rect index="0" x="920" y="610" width="50" height="25" />
-          <text class="level-desc" index="5" x="980" y="480"></text>
-          <text class="level-desc" index="4" x="980" y="510"></text>
-          <text class="level-desc" index="3" x="980" y="540"></text>
-          <text class="level-desc" index="2" x="980" y="570"></text>
-          <text class="level-desc" index="1" x="980" y="600"></text>
-          <text class="level-desc" index="0" x="980" y="630"></text>
-          <text class="level-value" index="5" x="1060" y="480"></text>
-          <text class="level-value" index="4" x="1060" y="510"></text>
-          <text class="level-value" index="3" x="1060" y="540"></text>
-          <text class="level-value" index="2" x="1060" y="570"></text>
-          <text class="level-value" index="1" x="1060" y="600"></text>
-          <text class="level-value" index="0" x="1060" y="630"></text>
+        <g class="tips" text-anchor="start">
+          <rect class="container" rx="20" ry="20" fill="white" fill-opacity="0.6" stroke="black" stroke-width="3" />
+          <rect class="level-color" index="5" width="50" height="25" />
+          <rect class="level-color" index="4" width="50" height="25" />
+          <rect class="level-color" index="3" width="50" height="25" />
+          <rect class="level-color" index="2" width="50" height="25" />
+          <rect class="level-color" index="1" width="50" height="25" />
+          <rect class="level-color" index="0" width="50" height="25" />
+          <text class="level-desc" index="5"></text>
+          <text class="level-desc" index="4"></text>
+          <text class="level-desc" index="3"></text>
+          <text class="level-desc" index="2"></text>
+          <text class="level-desc" index="1"></text>
+          <text class="level-desc" index="0"></text>
+          <text class="level-value" index="5" text-anchor="end"></text>
+          <text class="level-value" index="4" text-anchor="end"></text>
+          <text class="level-value" index="3" text-anchor="end"></text>
+          <text class="level-value" index="2" text-anchor="end"></text>
+          <text class="level-value" index="1" text-anchor="end"></text>
+          <text class="level-value" index="0" text-anchor="end"></text>
         </g>
         <g class="district" font-size="56" font-weight="700" text-anchor="end">
           <text class="district-name" x="1100" y="100"></text>
@@ -92,6 +92,12 @@
     <div class="footer">
       <a href="https://github.com/ShawTim/dominate-hongkong" target="_blank"><img src="./images/github.png"/></a>
       <span>Created by <a href="https://github.com/ShawTim" target="_blank">ShawTim</a>.</span>
+    </div>
+    <div id="dropdown-menu" class="jq-dropdown">
+      <ul class="jq-dropdown-menu">
+        <li><label class="dropdown-header"></label></li>
+        <li class="jq-dropdown-divider"></li>
+      </ul>
     </div>
   </body>
 </html>

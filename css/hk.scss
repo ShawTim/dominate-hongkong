@@ -1,3 +1,5 @@
+@import "~@claviska/jquery-dropdown/jquery.dropdown.min.css";
+
 body {
   background: #9CCEC9;
   display: flex;
@@ -12,12 +14,22 @@ body {
 
   svg {
     polyline {
-      fill: white;
       cursor: pointer;
 
       &.hover {
         fill: yellow;
       }
+    }
+  }
+}
+
+#dropdown-menu {
+  .dropdown-header {
+    font-weight: bold;
+    cursor: initial;
+
+    &:hover {
+      background: inherit;
     }
   }
 }
@@ -45,3 +57,4 @@ body {
     margin-left: 10px;
   }
 }
+

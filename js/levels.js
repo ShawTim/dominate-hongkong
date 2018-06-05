@@ -1,6 +1,14 @@
 module.exports = {
   basic: {
     name: "基本版",
+    menu: {
+      x: 890,
+      y: 450,
+      width: 250,
+      height: 200,
+      lineHeight: 30,
+      fontSize: 20,
+    },
     data: [{
       level: 0,
       color: "#FFFFFF",
@@ -29,6 +37,14 @@ module.exports = {
   },
   local: {
     name: "本地居民版",
+    menu: {
+      x: 890,
+      y: 450,
+      width: 250,
+      height: 200,
+      lineHeight: 30,
+      fontSize: 20,
+    },
     data: [{
       level: 0,
       color: "#FFFFFF",
@@ -57,6 +73,14 @@ module.exports = {
   },
   trendy: {
     name: "潮童版",
+    menu: {
+      x: 890,
+      y: 450,
+      width: 250,
+      height: 200,
+      lineHeight: 30,
+      fontSize: 20,
+    },
     data: [{
       level: -99,
       color: "#FFFFFF",
