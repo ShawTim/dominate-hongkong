@@ -9,7 +9,7 @@ let selectedDistrict = "";
 let colorMap = {};
 
 const init = (svg) => {
-  resetLevel();
+  resetLevel(svg);
   renderTitle(svg);
   calculateLevel(svg);
   renderTip(svg);
@@ -22,7 +22,13 @@ const init = (svg) => {
   }, {});
 };
 
-const resetLevel = () => Object.keys(districts).forEach((d) => districts[d].level = 0);
+const resetLevel = (svg) => {
+  Object.keys(districts).forEach((d) => districts[d].level = 0);
+  const districtRegions = svg.querySelectorAll("polyline");
+  [...districtRegions].forEach((district) => {
+    district.setAttribute("fill", "white");
+  });
+};
 
 const calculateLevel = (svg) => {
   const levelValue = svg.querySelector(".title .level");
