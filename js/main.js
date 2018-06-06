@@ -175,6 +175,7 @@ const loadCustomize = () => {
       menu: levels.customize.menu,
       data: levels.customize.data.slice().sort((a, b) => b.level - a.level),
     }
+    data = obj;
   }
 
   return data;
