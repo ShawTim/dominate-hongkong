@@ -7,7 +7,6 @@ module.exports = {
       width: 250,
       height: 200,
       lineHeight: 30,
-      fontMargin: 10,
       fontSize: 20,
     },
     data: [{
@@ -44,7 +43,6 @@ module.exports = {
       width: 330,
       height: 200,
       lineHeight: 30,
-      fontMargin: 10,
       fontSize: 20,
     },
     data: [{
@@ -81,7 +79,6 @@ module.exports = {
       width: 330,
       height: 200,
       lineHeight: 30,
-      fontMargin: 7,
       fontSize: 12,
     },
     data: [{
@@ -118,7 +115,6 @@ module.exports = {
       width: 250,
       height: 200,
       lineHeight: 30,
-      fontMargin: 10,
       fontSize: 20,
     },
     data: [{

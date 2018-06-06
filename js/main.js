@@ -1,6 +1,7 @@
 import FileSaver from "file-saver";
 import micromodal from "micromodal";
 
+import serializer from "./serializer";
 import meta from "./meta";
 import levels from "./levels";
 import districts from "./districts";
@@ -42,7 +43,7 @@ const renderTitle = (svg) => {
   const mainTitle = svg.querySelector(".main-title");
   const levelTitle = svg.querySelector(".level-title");
 
-  mainTitle.innerHTML = meta.title;
+  mainTitle.innerHTML = levels[selected].title || meta.title;
   levelTitle.innerHTML = meta.level;
 };
 
@@ -57,22 +58,23 @@ const renderTip = (svg) => {
   container.setAttribute("y", levels[selected].menu.y);
   container.setAttribute("width", levels[selected].menu.width);
   container.setAttribute("height", levels[selected].menu.height);
+
+  const data = levels[selected].data.slice().sort((a, b) => a.level - b.level);
   const fontMargin = levels[selected].menu.fontSize/2;
   [...levelColors].forEach((color, i) => {
     color.setAttribute("x", levels[selected].menu.x+20);
     color.setAttribute("y", levels[selected].menu.y+10+(i*levels[selected].menu.lineHeight));
-    color.setAttribute("fill", levels[selected].data[color.getAttribute("index")-0].color);
-    color.innerHTML = levels[selected].data[color.getAttribute("index")-0].desc;
+    color.setAttribute("fill", data[color.getAttribute("index")-0].color);
   });
   [...levelDescs].forEach((desc, i) => {
     desc.setAttribute("x", levels[selected].menu.x+80);
     desc.setAttribute("y", levels[selected].menu.y+fontMargin+20+(i*levels[selected].menu.lineHeight));
-    desc.innerHTML = levels[selected].data[desc.getAttribute("index")-0].desc;
+    desc.innerHTML = data[desc.getAttribute("index")-0].desc;
   });
   [...levelValues].forEach((value, i) => {
     value.setAttribute("x", levels[selected].menu.x+levels[selected].menu.width-20);
     value.setAttribute("y", levels[selected].menu.y+fontMargin+20+(i*levels[selected].menu.lineHeight));
-    value.innerHTML = `${meta.levelPrefix}${levels[selected].data[value.getAttribute("index")-0].level}`;
+    value.innerHTML = `${meta.levelPrefix}${data[value.getAttribute("index")-0].level}`;
   });
 };
 
@@ -140,25 +142,68 @@ const renderOptions = (svg) => {
   });
 };
 
+const loadCustomize = () => {
+  const url = new URL(window.location.href);
+  let data;
+
+  try {
+    const param = url.searchParams.get("c");
+    const arr = serializer.deserialize(param);
+
+    const obj = { title: "", menu: {}, data: [] };
+    for (let i=0; i<6; i++) {
+      obj.data.push({ desc: arr[i*3], level: arr[i*3+1]-0, color: arr[i*3+2] });
+    }
+    obj.title = arr[18];
+    obj.menu = {
+      x: arr[19]-0,
+      y: arr[20]-0,
+      width: arr[21]-0,
+      height: arr[22]-0,
+      lineHeight: arr[23]-0,
+      fontSize: arr[24]-0,
+    };
+    obj.data.sort((a, b) => b.level - a.level);
+    levels.customize.title = obj.title;
+    levels.customize.menu = obj.menu;
+    levels.customize.data = obj.data;
+    data = obj;
+    selected = "customize";
+  } catch (e) {
+    const obj = {
+      title: meta.title,
+      menu: levels.customize.menu,
+      data: levels.customize.data.slice().sort((a, b) => b.level - a.level),
+    }
+  }
+
+  return data;
+};
+
 const initCustomize = () => {
-  levels.customize.data.slice().sort((a, b) => b.level - a.level).forEach((level, i) => {
+  const customize = loadCustomize();
+  customize.data.forEach((level, i) => {
     const desc = document.querySelector(`#modal #modal-content .input-level-desc[index="${i}"]`);
     const value = document.querySelector(`#modal #modal-content .input-level-value[index="${i}"]`);
     const color = document.querySelector(`#modal #modal-content .input-level-color[index="${i}"]`);
     if (desc) {
       desc.placeholder = level.desc;
+      desc.addEventListener("change", renderURL);
     }
     if (value) {
       value.placeholder = level.level;
+      value.addEventListener("change", renderURL);
     }
     if (color) {
       color.value = level.color;
       color.setAttribute("default-value", level.color);
+      color.addEventListener("change", renderURL);
     }
   });
 
   const title = document.getElementById("input-main-title");
-  title.placeholder = meta.title;
+  title.placeholder = customize.title || meta.title;
+  title.addEventListener("change", renderURL);
 
   const tipX = document.getElementById("input-tip-x");
   const tipY = document.getElementById("input-tip-y");
@@ -166,12 +211,61 @@ const initCustomize = () => {
   const tipH = document.getElementById("input-tip-h");
   const lineHeight = document.getElementById("input-tip-line-height");
   const fontSize = document.getElementById("input-tip-font-size");
-  tipX.placeholder = levels.customize.menu.x;
-  tipY.placeholder = levels.customize.menu.y;
-  tipW.placeholder = levels.customize.menu.width;
-  tipH.placeholder = levels.customize.menu.height;
-  lineHeight.placeholder = levels.customize.menu.lineHeight;
-  fontSize.placeholder = levels.customize.menu.fontSize;
+  tipX.placeholder = customize.menu.x;
+  tipY.placeholder = customize.menu.y;
+  tipW.placeholder = customize.menu.width;
+  tipH.placeholder = customize.menu.height;
+  lineHeight.placeholder = customize.menu.lineHeight;
+  fontSize.placeholder = customize.menu.fontSize;
+
+  tipX.addEventListener("change", renderURL);
+  tipY.addEventListener("change", renderURL);
+  tipW.addEventListener("change", renderURL);
+  tipH.addEventListener("change", renderURL);
+  lineHeight.addEventListener("change", renderURL);
+  fontSize.addEventListener("change", renderURL);
+
+  const urlInput = document.getElementById("input-url");
+  urlInput.addEventListener("click", function(e) {
+    this.setSelectionRange(0, this.value.length);
+  });
+
+  renderURL();
+
+};
+
+const renderURL = () => {
+  const strs = [];
+
+  for (let i=0; i<6; i++) {
+    const desc = document.querySelector(`#modal #modal-content .input-level-desc[index="${i}"]`);
+    const value = document.querySelector(`#modal #modal-content .input-level-value[index="${i}"]`);
+    const color = document.querySelector(`#modal #modal-content .input-level-color[index="${i}"]`);
+    if (desc)  strs.push(desc.value || desc.placeholder || "");
+    if (value) strs.push(value.value || value.placeholder || "");
+    if (color) strs.push(color.value || color.getAttribute("default-value") || "");
+  };
+  const title = document.getElementById("input-main-title");
+  const tipX = document.getElementById("input-tip-x");
+  const tipY = document.getElementById("input-tip-y");
+  const tipW = document.getElementById("input-tip-w");
+  const tipH = document.getElementById("input-tip-h");
+  const lineHeight = document.getElementById("input-tip-line-height");
+  const fontSize = document.getElementById("input-tip-font-size");
+
+  strs.push(title.value || title.placeholder || "");
+  strs.push(tipX.value || tipX.placeholder || "");
+  strs.push(tipY.value || tipY.placeholder || "");
+  strs.push(tipW.value || tipW.placeholder || "");
+  strs.push(tipH.value || tipH.placeholder || "");
+  strs.push(lineHeight.value || lineHeight.placeholder || "");
+  strs.push(fontSize.value || fontSize.placeholder || "");
+
+  const encoded = serializer.serialize(strs);
+  const url = `${window.location.protocol}//${window.location.hostname}${window.location.pathname}?c=${encoded}`;
+
+  const urlInput = document.getElementById("input-url");
+  urlInput.value = url;
 };
 
 const resetCustomize = () => {
@@ -227,7 +321,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     levels.customize.data.sort((a, b) => a.level - b.level);
 
     const title = document.getElementById("input-main-title");
-    meta.title = title.value || title.placeholder;
+    levels.customize.title = title.value || title.placeholder;
 
     const tipX = document.getElementById("input-tip-x");
     const tipY = document.getElementById("input-tip-y");
@@ -282,8 +376,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
   });
   */
 
-  init(svg);
   initCustomize();
+  init(svg);
 
   // font family
   const texts = svg.querySelectorAll("g");

@@ -80,8 +80,8 @@ body {
 
   &.is-open {
     display: block;
-    position: fixed;
-    margin: 10vh auto;
+    position: absolute;
+    margin: 5vh auto;
     width: 500px;
     background-color: #FFFFFF;
     border: 3px solid #000000;
@@ -122,6 +122,10 @@ body {
           button {
             font-size: 20px;
           }
+        }
+
+        #input-url {
+          width: 100%;
         }
       }
 

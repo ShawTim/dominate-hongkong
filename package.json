@@ -30,6 +30,7 @@
     "html2canvas": "^1.0.0-alpha.9",
     "jquery": "^3.3.1",
     "micromodal": "^0.3.2",
+    "msgpack-lite": "^0.1.26",
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.20.1",
